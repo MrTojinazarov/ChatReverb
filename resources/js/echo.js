@@ -15,32 +15,24 @@ window.Echo = new Echo({
 
 window.Echo.channel('xabar')
     .listen('MessageEvent', (event) => {
-        console.log('New Message Event:', event);
+        console.log('New Message Event:', event.message.text, event.message.file, event.time);
 
         const messageList = document.getElementById('messageList');
 
-        if (!messageList) {
-            console.error('Element with ID "messageList" not found.');
-            return;
-        }
 
-        const newMessage = document.createElement('li');
-        newMessage.classList.add('message-item', 'p-3', 'mb-2', 'border', 'rounded');
-
-        if (event.message) {
+        if (event.message.text) {
             const messageText = document.createElement('p');
-            messageText.classList.add('mb-2');
-            messageText.innerText = event.message;
-            newMessage.appendChild(messageText);
+            messageText.innerText = event.message.text;
+            messageList.append(messageText);
         }
 
-        if (event.file) {
-            const fileExtension = event.file.split('.').pop().toLowerCase();
+        if (event.message.file) {
+            const fileExtension = event.message.file.split('.').pop().toLowerCase();
             const fileContainer = document.createElement('div');
 
             if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp'].includes(fileExtension)) {
                 const imgPreview = document.createElement('img');
-                imgPreview.src = event.file;
+                imgPreview.src = event.message.file;
                 imgPreview.alt = 'Image Preview';
                 imgPreview.style.maxWidth = '200px';
                 imgPreview.style.display = 'block';
@@ -48,31 +40,29 @@ window.Echo.channel('xabar')
                 fileContainer.appendChild(imgPreview);
             } else if (['mp4', 'mov', 'avi', 'mkv'].includes(fileExtension)) {
                 const videoPreview = document.createElement('video');
-                videoPreview.src = event.file;
+                videoPreview.src = event.message.file;
                 videoPreview.controls = true;
                 videoPreview.style.maxWidth = '200px';
                 videoPreview.classList.add('mt-2');
                 fileContainer.appendChild(videoPreview);
             } else {
                 const fileLink = document.createElement('a');
-                fileLink.href = event.file;
+                fileLink.href = event.message.file;
                 fileLink.target = '_blank';
                 fileLink.innerText = 'Download File';
                 fileLink.classList.add('d-block', 'mt-2', 'text-decoration-none', 'text-primary');
                 fileContainer.appendChild(fileLink);
             }
 
-            newMessage.appendChild(fileContainer);
+            messageList.append(fileContainer);
         }
 
         if (event.time) {
-            const timestamp = document.createElement('span');
-            timestamp.classList.add('message-time', 'text-muted', 'd-block', 'mt-1', 'small');
-            timestamp.innerText = `Yuborilgan vaqt: ${event.time}`;
-            newMessage.appendChild(timestamp);
+            const timestamp = document.createElement('p');
+            timestamp.innerText = event.time;
+            messageList.append(timestamp);
         }
 
-        messageList.prepend(newMessage);
     });
 
 

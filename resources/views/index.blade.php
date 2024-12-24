@@ -40,7 +40,6 @@
     <div class="container">
         <section>
             <div class="container py-5">
-
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-6">
 
@@ -49,7 +48,7 @@
                                 <h5 class="mb-0">Chat</h5>
                             </div>
                             <div class="card-body" data-mdb-perfect-scrollbar-init
-                                style="position: relative; height: 400px">
+                                style="position: relative; height: 400px" id="messageList">
                                 @foreach ($models as $model)
                                     <div class="d-flex flex-row justify-content-start">
                                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
@@ -79,7 +78,8 @@
                                                 </p>
                                             @endif
                                             <p class="small ms-3 mb-3 rounded-3 text-muted">
-                                                {{ $model->created_at->format('H:i') }}</p>
+                                                {{ $model->created_at->format('H:i') }}
+                                            </p>
                                         </div>
                                     </div>
                                 @endforeach

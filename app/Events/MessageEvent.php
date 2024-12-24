@@ -13,12 +13,10 @@ class MessageEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $file;   
 
-    public function __construct($message, $file = null)
+    public function __construct($message)
     {
         $this->message = $message;
-        $this->file = $file; 
     }
 
     public function broadcastOn(): array
@@ -32,7 +30,6 @@ class MessageEvent implements ShouldBroadcast
     {
         return [
             'message' => $this->message, 
-            'file' => $this->file, 
             'time' => now()->toDateTimeString(),
         ];
     }
